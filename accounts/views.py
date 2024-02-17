@@ -1,31 +1,24 @@
-from .serializers import UserSerializer, UserProfileSerializer, CustomPasswordResetSerializer
+from .serializers import UserProfileSerializer, CustomPasswordResetSerializer
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth import get_user_model
-
-class CustomObtainAuthToken(ObtainAuthToken):
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        token = response.data.get('token')
-        user_id = response.data.get('user_id')
-        return Response({'token': token, 'user_id': user_id})
-    
-
-class SignUpView(CreateAPIView):
-    queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
+from .serializers import MyTokenObtainPairSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .models import CustomUser
+from .serializers import RegisterSerializer
 
 
-class LoginView(ObtainAuthToken):
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        token = Token.objects.get(key=response.data['token'])
-        return Response({'token': token.key, 'user_id': token.user_id})
+class MyObtainTokenPairView(TokenObtainPairView):
+    permission_classes = (AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer
+
+
+class RegisterView(CreateAPIView):
+    queryset = CustomUser.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
     
     
 class UserProfileView(RetrieveUpdateAPIView):

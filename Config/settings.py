@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # External app
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

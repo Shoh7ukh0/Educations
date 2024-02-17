@@ -1,8 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.core.validators import FileExtensionValidator
-from uuid import uuid4
-
 
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
@@ -45,3 +42,11 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.first_name
+    
+class UserProfile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
+    # Add additional fields as needed
+    bio = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Profile of {self.user.username}"

@@ -1,5 +1,5 @@
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
-from .serializers import CustomPasswordResetSerializer
+from .serializers import CustomPasswordResetSerializer, RegisterSerializer
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from rest_framework import (
     permissions,
@@ -9,9 +9,9 @@ from rest_framework import (
 from .serializers import MyTokenObtainPairSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import CustomUser, UserProfile
-from .serializers import RegisterSerializer
+from .models import CustomUser
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class MyObtainTokenPairView(TokenObtainPairView):
@@ -21,32 +21,21 @@ class MyObtainTokenPairView(TokenObtainPairView):
 
 class RegisterView(CreateAPIView):
     queryset = CustomUser.objects.all()
-    permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        user = serializer.save()
 
-    def perform_create(self, serializer):
-        user = CustomUser()
-        for key, value in serializer.validated_data.items():
-            setattr(user, key, value)
-        user.set_password(serializer.validated_data['password'])
-        user.save()
-        UserProfile.objects.create(user=user)
+        # Generate and include authentication token in the response
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
 
-class UserDetailAPIView(RetrieveAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = MyTokenObtainPairSerializer
-    permission_class = [permissions.IsAuthenticated]
-    
-    def get_object(self):
-        user_id = self.request.user.id
-        return CustomUser.objects.filter(id=self.kwargs['pk']).prefetch_related('profile').first()
+        return Response({
+            'user': MyTokenObtainPairSerializer(user.first_name).data,
+            'access_token': access_token,
+        }, status=status.HTTP_201_CREATED)
     
 
 class CustomPasswordResetView(PasswordResetView):

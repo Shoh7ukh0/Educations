@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-47x3xgw8!4d694%(jz!lykb9_6&x@(#o#8nv-&h^i@z_l+v7pr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    'localhost:3000',
+    'educationsAPI.pythonanywhere.com',
+    '127.0.0.1:8000',
+]
 
 
 # Application definition
@@ -139,7 +144,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Qo'shimcha quyilayotgan sozlamalar >>>>>>>
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': [ 
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
 }

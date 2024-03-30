@@ -5,14 +5,10 @@ from django.contrib.auth.models import User
 class Our_partners(models.Model):
     images = models.ImageField(upload_to='courses/our_partners/images/', blank=True, null=True)
 
-    def __str__(self):
-        return self.images
     
 class Community(models.Model):
     video = models.FileField(upload_to='courses/community/video/', blank=True, null=True)
-
-    def __str__(self):
-        return self.video
+    
 
 class Course(models.Model):
     title = models.CharField(max_length=100)

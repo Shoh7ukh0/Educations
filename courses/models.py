@@ -21,3 +21,65 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Teacher(models.Model):
+    images = models.ImageField(upload_to='courses/teacher/img/', blank=True, null=True)
+    name = models.CharField(max_length=250)
+    position = models.CharField(max_length=250)
+    body = models.TextField()
+    telegram = models.URLField()
+    instagram = models.URLField()
+    facebook = models.URLField()
+    x = models.URLField()
+    linkedin = models.URLField()
+
+    def __str__(self):
+        return self.name
+    
+class Upcoming_Events(models.Model):
+    title = models.CharField(max_length=250)
+    link = models.URLField()
+    images = models.ImageField(upload_to='courses/Upcoming_Events/img/', blank=True, null=True)
+    day = models.DateField()
+    date = models.DateField()
+    location = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.title
+    
+class Readers_Opinion(models.Model):
+    images = models.ImageField(upload_to='courses/readers_opinion/img/', blank=True, null=True)
+    name = models.CharField(max_length=250)
+    body = models.TextField()
+
+    def __str__(self):
+        return self.name
+    
+
+class Top_Products(models.Model):
+    title = models.CharField(max_length=250)
+    link = models.URLField()
+
+    def __str__(self):
+        return self.title
+
+class Quick_Links(models.Model):
+    title = models.CharField(max_length=250)
+    link = models.URLField()
+
+    def __str__(self):
+        return self.title
+
+class Features(models.Model):
+    title = models.CharField(max_length=250)
+    link = models.URLField()
+
+    def __str__(self):
+        return self.title
+
+class Resources(models.Model):
+    title = models.CharField(max_length=250)
+    link = models.URLField()
+
+    def __str__(self):
+        return self.title

@@ -1,17 +1,17 @@
 from rest_framework import serializers
-from .models import Our_partners, Community, Course, Lesson, Teacher, Benefits, \
-                    Testimonials, Asked_Questions, Resources
+from .models import Ourpartners, Community, Course, Lesson, Teacher, Benefits, \
+                    Testimonials, AskedQuestions, Resources
 
-class Our_partnersSerializer(serializers.ModelSerializer):
+class OurpartnersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Our_partners
+        model = Ourpartners
         fields = '__all__'
 
 
 class CommunitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Community
-        fileds = '__all__'
+        fields = '__all__'
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,9 +40,9 @@ class TestimonialsSerializer(serializers.ModelSerializer):
         model = Testimonials
         fields = '__all__'
 
-class Asked_QuestionsSerializer(serializers.ModelSerializer):
+class AskedQuestionsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Asked_Questions
+        model = AskedQuestions
         fields = '__all__'
 
 class ResourcesSerializer(serializers.ModelSerializer):

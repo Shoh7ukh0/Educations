@@ -2,7 +2,7 @@ from django.db import models
 from accounts.models import CustomUser
 from django.contrib.auth.models import User
 
-class Our_partners(models.Model):
+class Ourpartners(models.Model):
     images = models.ImageField(upload_to='courses/our_partners/images/', blank=True, null=True)
 
     
@@ -60,7 +60,7 @@ class Testimonials(models.Model):
     def __str__(self):
         return self.name
     
-class Asked_Questions(models.Model):
+class AskedQuestions(models.Model):
     title = models.CharField(max_length=250)
     body = models.TextField()
 

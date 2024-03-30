@@ -1,16 +1,16 @@
 from rest_framework import generics
-from .models import Our_partners, Community, Course, Lesson, Teacher, Benefits, \
-                    Testimonials, Asked_Questions, Resources
-from .serializers import Our_partnersSerializer, CommunitySerializer, CourseSerializer, LessonSerializer, TeacherSerializer, \
+from .models import Ourpartners, Community, Course, Lesson, Teacher, Benefits, \
+                    Testimonials, AskedQuestions, Resources
+from .serializers import OurpartnersSerializer, CommunitySerializer, CourseSerializer, LessonSerializer, TeacherSerializer, \
                     TestimonialsSerializer, BenefitsSerializer, \
-                    Asked_QuestionsSerializer, ResourcesSerializer
+                    AskedQuestionsSerializer, ResourcesSerializer
 
-class Our_partnersListCreateView(generics.ListCreateAPIView):
-    queryset = Our_partners.objects.all()
-    serializer_class = Our_partnersSerializer
+class OurpartnersListCreateView(generics.ListAPIView):
+    queryset = Ourpartners.objects.all()
+    serializer_class = OurpartnersSerializer
 
 
-class CommunityListCreateView(generics.ListCreateAPIView):
+class CommunityListCreateView(generics.ListAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
@@ -45,9 +45,9 @@ class TestimonialsListCreateView(generics.ListAPIView):
     serializer_class = TestimonialsSerializer
 
 
-class Asked_QuestionsListCreateView(generics.ListAPIView):
-    queryset = Asked_Questions.objects.all()
-    serializer_class = Asked_QuestionsSerializer
+class AskedQuestionsListCreateView(generics.ListAPIView):
+    queryset = AskedQuestions.objects.all()
+    serializer_class = AskedQuestionsSerializer
 
 
 class ResourcesListCreateView(generics.ListAPIView):

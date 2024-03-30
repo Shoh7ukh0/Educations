@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import Our_partners, Community, Course, Lesson, Teacher, Benefits, \
-                    Testimonials, Asked_Questions, Resources
+from .models import Ourpartners, Community, Course, Lesson, Teacher, Benefits, \
+                    Testimonials, AskedQuestions, Resources
 
 # Register your models here.
 
-@admin.register(Our_partners)
-class Our_partnersAdmin(admin.ModelAdmin):
+@admin.register(Ourpartners)
+class OurpartnersAdmin(admin.ModelAdmin):
     list_display = ['images', ]
 
 @admin.register(Community)
@@ -38,8 +38,8 @@ class TestimonialsAdmin(admin.ModelAdmin):
     list_display = ['images', 'name', 'body', ]
 
 
-@admin.register(Asked_Questions)
-class Asked_QuestionsAdmin(admin.ModelAdmin):
+@admin.register(AskedQuestions)
+class AskedQuestionsAdmin(admin.ModelAdmin):
     list_display = ['title', 'body', ]
 
 

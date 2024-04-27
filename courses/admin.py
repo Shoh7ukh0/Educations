@@ -1,8 +1,13 @@
 from django.contrib import admin
-from .models import Ourpartners, Community, Course, Lesson, Teacher, Benefits, \
+from .models import Content, Ourpartners, Community, Module, Course, Subject, Teacher, Benefits, \
                     Testimonials, AskedQuestions, Resources
 
 # Register your models here.
+
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ['title', 'slug']
+    prepopulated_fields = {'slug': ('title',)}
 
 @admin.register(Ourpartners)
 class OurpartnersAdmin(admin.ModelAdmin):
@@ -12,15 +17,21 @@ class OurpartnersAdmin(admin.ModelAdmin):
 class CommunityAdmin(admin.ModelAdmin):
     list_display = ['video', ]
 
+class ModuleInline(admin.StackedInline):
+    model = Module
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['title', 'description', ]
+    list_display = ['title', 'subject', 'created']
+    list_filter = ['created', 'subject']
+    search_fields = ['title', 'overview']
+    prepopulated_fields = {'slug': ('title',)}
+    inlines = [ModuleInline]
 
 
-@admin.register(Lesson)
-class LessonAdmin(admin.ModelAdmin):
-    list_display = ['title', 'course', 'content', ]
+@admin.register(Content)
+class ContentAdmin(admin.ModelAdmin):
+    list_display = ['module', 'title', 'description', 'content_type', 'item']
 
 
 @admin.register(Teacher)

@@ -1,17 +1,21 @@
 from modeltranslation.translator import register, TranslationOptions
-from .models import Course, Lesson, Benefits, Teacher, \
+from .models import Course, Module, Content, Benefits, Teacher, \
              Testimonials, AskedQuestions, Resources
 
 
 @register(Course)
 class CourseTranslationOptions(TranslationOptions):
-    fields = ('title', 'description',)
+    fields = ('title', 'overview',)
     required_languages = ('ru', 'en')
 
+@register(Module)
+class ModuleTranslationOptions(TranslationOptions):
+    fields = ('title', )
+    required_languages = ('ru', 'en')
 
-@register(Lesson)
-class LessonTranslationOptions(TranslationOptions):
-    fields = ('title', 'content',)
+@register(Content)
+class ContentTranslationOptions(TranslationOptions):
+    fileds = ('title', 'description', )
     required_languages = ('ru', 'en')
 
 

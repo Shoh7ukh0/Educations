@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ourpartners, Community, Course, Lesson, Teacher, Benefits, \
+from .models import Ourpartners, Community, Subject, Content, Course, Module, Teacher, Benefits, \
                     Testimonials, AskedQuestions, Resources
 
 class OurpartnersSerializer(serializers.ModelSerializer):
@@ -13,14 +13,22 @@ class CommunitySerializer(serializers.ModelSerializer):
         model = Community
         fields = '__all__'
 
-class LessonSerializer(serializers.ModelSerializer):
+class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lesson
+        model = Subject
+        fields = '__all__'
+
+class ModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = '__all__'
+
+class ContentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Content
         fields = '__all__'
 
 class CourseSerializer(serializers.ModelSerializer):
-    lessons = LessonSerializer(many=True, read_only=True)
-
     class Meta:
         model = Course
         fields = '__all__'

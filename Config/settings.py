@@ -33,6 +33,8 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
 
+    'modeltranslation',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,13 +120,32 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uz-en'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
+
+
+LOGIN_REDIRECT_URL = 'courses'
+LOGIN_URL = '/accounts/login/'
+LOGOUT_URL = 'logout'
+
+
+gettext = lambda s: s
+LANGUAGES = (
+    ('uz', gettext('Uzbekcha')),
+    ('ru', gettext('Russian')),
+    ('en', gettext('English')),
+)
+
+MODELTRANSLATION_LANGUAGES = ('uz', 'ru', 'en')
+
+MODELTRANSLATION_TRANSLATION_FILES = (
+    'courses.translation',
+)
 
 
 # Static files (CSS, JavaScript, Images)

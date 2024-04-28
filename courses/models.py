@@ -4,6 +4,10 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from .fields import OrderField
 
+class Banner(models.Model):
+    images = models.ImageField(upload_to='courses/banners/', blank=True)
+        
+
 class Ourpartners(models.Model):
     images = models.ImageField(upload_to='courses/our_partners/images/', blank=True, null=True)
 

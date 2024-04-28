@@ -1,6 +1,12 @@
 from rest_framework import serializers
-from .models import Ourpartners, Community, Subject, Content, Course, Module, Teacher, Benefits, \
+from .models import Banner, Ourpartners, Community, Subject, Content, Course, Module, Teacher, Benefits, \
                     Testimonials, AskedQuestions, Resources
+
+class BannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banner
+        fields = '__all__'
+
 
 class OurpartnersSerializer(serializers.ModelSerializer):
     class Meta:

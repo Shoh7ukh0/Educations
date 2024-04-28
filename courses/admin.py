@@ -1,8 +1,12 @@
 from django.contrib import admin
-from .models import Content, Ourpartners, Community, Module, Course, Subject, Teacher, Benefits, \
+from .models import Banner, Content, Ourpartners, Community, Module, Course, Subject, Teacher, Benefits, \
                     Testimonials, AskedQuestions, Resources
 
 # Register your models here.
+
+@admin.register(Banner)
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ['images']
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):

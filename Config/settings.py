@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
     'payment.apps.PaymentConfig',
     'students.apps.StudentsConfig',
+    'Quiz.apps.QuizConfig',
 
     # External app
     'rest_framework',

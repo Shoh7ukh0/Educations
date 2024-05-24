@@ -51,7 +51,8 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('accounts/', include('accounts.urls', namespace='accounts')),     
-    path('courses/', include('courses.urls', namespace='courses')),     
+    path('courses/', include('courses.urls', namespace='courses')), 
+	path('quiz/', include('Quiz.urls', namespace='quiz')),    
 ]
 
 if settings.DEBUG:

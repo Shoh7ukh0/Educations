@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import CustomUser
+from accounts.models import CustomUser, UserProfile
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from .fields import OrderField
@@ -30,8 +30,8 @@ class Subject(models.Model):
 
 class Course(models.Model):
     images = models.ImageField(upload_to='Course/Images')
-    students = models.ManyToManyField(CustomUser, related_name='courses_joined', blank=True)
-    owner = models.ForeignKey(CustomUser, related_name='courses_created', on_delete=models.CASCADE)
+    students = models.ManyToManyField('accounts.CustomUser', related_name='courses_joined', blank=True)
+    owner = models.ForeignKey('accounts.CustomUser', related_name='courses_created', on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, related_name='courses', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
@@ -71,10 +71,38 @@ class Content(models.Model):
     description = models.TextField(blank=True)
     item = GenericForeignKey('content_type', 'object_id')
     order = OrderField(blank=True, for_fields=['module'])
+    is_unlocked = models.BooleanField(default=False)
 
 
     class Meta:
         ordering = ['order']
+
+    def unlock(self):
+        self.is_unlocked = True
+        self.save()
+
+class Purchase(models.Model):
+    user = models.ForeignKey('accounts.CustomUser', related_name='purchases', on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, related_name='purchases', on_delete=models.CASCADE)
+    modules = models.ManyToManyField(Module, related_name='purchases', blank=True)
+    purchased_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username} purchased {self.course.title}'
+
+    @classmethod
+    def get_purchased_courses(cls, user):
+        return cls.objects.filter(user=user).values_list('course__title', flat=True).distinct()
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        profile = UserProfile.objects.get_or_create(user=self.user)
+        profile.purchased_courses.add(self.course)
+
+    def unlock_modules(self):
+        purchased_modules = self.course.modules.all()
+        for module in purchased_modules:
+            module.unlock()
     
 class Benefits(models.Model):
     number = models.IntegerField(default=0, blank=True, null=True)

@@ -1,10 +1,24 @@
-from rest_framework import generics
-from .models import Banner, Ourpartners, Community, Subject, Content, Course, Module, Teacher, Benefits, \
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .models import Banner, Purchase, Ourpartners, Community, Subject, Content, Course, Module, Teacher, Benefits, \
                     Testimonials, AskedQuestions, Resources
 from .serializers import BannerSerializer, OurpartnersSerializer, CommunitySerializer, SubjectSerializer, \
                     CourseSerializer, ModuleSerializer, TeacherSerializer, \
                     TestimonialsSerializer, BenefitsSerializer, ContentSerializer, \
-                    AskedQuestionsSerializer, ResourcesSerializer
+                    AskedQuestionsSerializer, ResourcesSerializer, PurchaseSerializer
+
+from rest_framework.permissions import IsAuthenticated
+from accounts.serializers import UserProfileSerializer
+
+class PurchasedCoursesView(generics.RetrieveAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.profile
+
 
 class CourseSearchView(generics.ListAPIView):
     serializer_class = CourseSerializer
@@ -38,13 +52,44 @@ class CommunityListView(generics.ListAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
+
 class SubjectListView(generics.ListAPIView):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
 
+
 class CourseListView(generics.ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    
+
+class PurchaseCourseView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, course_id):
+        course = get_object_or_404(Course, id=course_id)
+        user = request.user
+
+        # Check if the user has already purchased the course
+        if Purchase.objects.filter(user=user, course=course).exists():
+            return Response({"error": "You have already purchased this course"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create a new purchase record
+        purchase = Purchase.objects.create(user=user, course=course)
+
+        # Add all contents of the purchased course to the user's unlocked contents
+        contents_to_unlock = course.contents.all()
+        purchase.contents.set(contents_to_unlock)
+
+        serializer = PurchaseSerializer(purchase)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+class PurchasedCoursesView(generics.ListAPIView):
+    serializer_class = PurchaseSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Purchase.get_purchased_courses(user)
 
 
 class ModuleListView(generics.ListAPIView):

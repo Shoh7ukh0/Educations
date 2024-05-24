@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenVerifyView
 from .views import MyObtainTokenPairView, CustomPasswordResetConfirmView, \
-                CustomPasswordResetView, RegisterView
+                CustomPasswordResetView, RegisterView, UserProfileView
 
 app_name = 'accounts'
 
@@ -11,5 +11,5 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('login/', MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
     path('register/', RegisterView.as_view(), name='auth_register'),
-    # path('profile/<pk>/', UserDetailAPIView.as_view(), name='detail'),
+    path('profile/<int:pk>/', UserProfileView.as_view(), name='user-profile'),
 ]

@@ -1,4 +1,5 @@
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from django.http import Http404
+from rest_framework import generics
 from .serializers import CustomPasswordResetSerializer, RegisterSerializer
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from rest_framework import (
@@ -11,6 +12,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import CustomUser
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from .models import UserProfile, CustomUser
+from .serializers import UserProfileSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -19,7 +24,7 @@ class MyObtainTokenPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-class RegisterView(CreateAPIView):
+class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
 
@@ -55,3 +60,8 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
             # You can add additional data to the response if needed
             response.data['custom_key'] = 'custom_value'
         return response
+    
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer

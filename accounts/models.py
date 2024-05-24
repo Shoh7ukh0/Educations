@@ -6,7 +6,7 @@ class CustomUserManager(BaseUserManager):
 
     def _create_user(self, phone, password, **extra_fields):
         if not phone:
-            raise ValueError('Users require an phone field')
+            raise ValueError('Users require a phone field')
         user = self.model(phone=phone, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -39,14 +39,15 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = "phone"
     objects = CustomUserManager()
 
-
     def __str__(self):
         return self.first_name
     
 class UserProfile(models.Model):
+    photo = models.ImageField(upload_to='accounts/profile/pctiure/')
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
-    # Add additional fields as needed
     bio = models.TextField(blank=True, null=True)
+    # Use string reference to avoid direct import
+    purchased_courses = models.ManyToManyField('courses.Course', related_name='purchased_by', blank=True)
 
     def __str__(self):
         return f"Profile of {self.user}"

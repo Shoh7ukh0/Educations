@@ -1,4 +1,6 @@
-from .models import CustomUser
+from courses.models import Course
+from courses.serializers import CourseSerializer
+from .models import CustomUser, UserProfile
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
@@ -49,9 +51,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
     
 class UserProfileSerializer(serializers.ModelSerializer):
+    purchased_courses = CourseSerializer(many=True, read_only=True)  # Assuming you have a CourseSerializer
+    phone = serializers.CharField(source='user.phone', read_only=True)
+
     class Meta:
-        model = CustomUser
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'phone', )
+        model = UserProfile
+        fields = ['phone', 'bio', 'purchased_courses']
 
 
 class CustomPasswordResetSerializer(serializers.Serializer):

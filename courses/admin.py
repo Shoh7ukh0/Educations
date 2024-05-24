@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Banner, Content, Ourpartners, Community, Module, Course, Subject, Teacher, Benefits, \
+from .models import Banner, Content, Purchase, Ourpartners, Community, Module, Course, Subject, Teacher, Benefits, \
                     Testimonials, AskedQuestions, Resources
 
 # Register your models here.
@@ -35,8 +35,11 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Content)
 class ContentAdmin(admin.ModelAdmin):
-    list_display = ['module', 'title', 'description', 'content_type', 'item']
+    list_display = ['module', 'title', 'description', 'content_type', 'item', 'is_unlocked']
 
+@admin.register(Purchase)
+class PurchaseAdmin(admin.ModelAdmin):
+    list_display = ['course']
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):

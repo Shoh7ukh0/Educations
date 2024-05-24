@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Banner, Ourpartners, Community, Subject, Content, Course, Module, Teacher, Benefits, \
+from .models import Banner, Ourpartners, Community, Subject, Content, Course, Purchase, Module, Teacher, Benefits, \
                     Testimonials, AskedQuestions, Resources
     
 
@@ -38,6 +38,11 @@ class ContentSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
+        fields = '__all__'
+
+class PurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
         fields = '__all__'
 
 class TeacherSerializer(serializers.ModelSerializer):

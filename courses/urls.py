@@ -2,7 +2,7 @@ from django.urls import path
 from .views import CourseSearchView, BannerListView, OurpartnersListView, CommunityListView, CourseListView, \
             CourseDetailView, SubjectListView, ModuleListView, ContentListView, \
             TeacherListView, TestimonialsListView, BenefitsListView, \
-            AskedQuestionsListView, ResourcesListView
+            AskedQuestionsListView, ResourcesListView, PurchaseCourseView, PurchasedCoursesView
 
 app_name = 'courses'
     
@@ -16,6 +16,10 @@ urlpatterns = [
     path('community/', CommunityListView.as_view(), name='community-list'),
 
     path('courses/', CourseListView.as_view(), name='course-list'),
+
+    path('<int:course_id>/purchase/', PurchaseCourseView.as_view(), name='purchase-course'),
+
+    path('purchased-courses/', PurchasedCoursesView.as_view(), name='purchased-courses'),
 
     path('courses/<int:pk>/', CourseDetailView.as_view(), name='course-detail'),
 
